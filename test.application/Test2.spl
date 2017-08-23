@@ -141,9 +141,6 @@ composite Test2
 						}
 
 						counter = counter + 1 ;
-						//for(rstring i in )
-						//submit({ga_client_id = clientOut.ga_client_id, time = clientOut.time, destination = clientOut.destination,
-						//step = dict[clientOut.ga_client_id]}, agg_client_data);
 
 					}
 
@@ -233,9 +230,6 @@ composite Test2
 						}
 
 						counter = counter + 1 ;
-						//for(rstring i in )
-						//submit({ga_client_id = clientOut.ga_client_id, time = clientOut.time, destination = clientOut.destination,
-						//step = dict[clientOut.ga_client_id]}, agg_client_data);
 
 					}
 					
