@@ -62,7 +62,7 @@ composite Test2
 					state :
 					{
 						mutable map<rstring, list<list<rstring>>> dict = { } ;
-						mutable list<rstring> iter = [ ] ;
+						//mutable list<rstring> iter = [ ] ;
 						int32 MAX_SIZE = 26113 ;
 						mutable int32 counter = 0 ;
 					}
@@ -71,8 +71,6 @@ composite Test2
 					{
 						if(has(dict, clientOut.ga_client_id) == false)
 						{
-						//записываю сиды для итерации отображения
-							appendM(iter, clientOut.ga_client_id) ;
 							//формирую отображение
 							mutable list<list<rstring>> tmpList = [ ] ;
 							list<rstring> emptyList = [ ] ;
@@ -93,46 +91,35 @@ composite Test2
 						if(counter == MAX_SIZE - 1)
 						{
 						//поиск моды
-							for(int32 i in range(size(iter)))
+							for(rstring i in dict)
 							{
 								mutable int32 maxDest = 0 ;
-								for(int32 j in range(size(dict [ iter [ i ] ] [ 1 ])))
+								for(int32 j in range(size(dict [ i ] [ 1 ])))
 								{
-									if(size(find(dict [ iter [ i ] ] [ 1 ], dict [ iter [ i ] ] [ 1 ] [ j
+									if(size(find(dict [ i ] [ 1 ], dict [ i ] [ 1 ] [ j
 										])) >= maxDest)
-									{
 										maxDest = j ;
-									}
-
-									if(j == size(dict [ iter [ i ] ] [ 1 ]) - 1)
-									{
-										dict [ iter [ i ] ] [ 1 ] [ 0 ] = dict [ iter [ i ] ] [ 1 ] [ maxDest
-											] ;
-									}
 
 								}
-
-							}
-							//поиск максимального степа у сида и вывод всего тапла
-							for(int32 i in range(size(iter)))
-							{
-								if(has(dict [ iter [ i ] ] [ 0 ], "book"))
+								
+								//поиск максимального степа у сида и вывод всего тапла
+								if(has(dict [ i ] [ 0 ], "book"))
 								{
-									submit({ ga_client_id = iter [ i ], step = "book", destination = dict
-										[ iter [ i ] ] [ 1 ] [ 0 ] }, agg_client_data) ;
+									submit({ ga_client_id = i, step = "book", destination = dict
+										[ i ] [ 1 ] [ maxDest ] }, agg_client_data) ;
 								}
 
 								else
 								{
-									if(has(dict [ iter [ i ] ] [ 0 ], "price")) 
+									if(has(dict [ i ] [ 0 ], "price")) 
 									{
-										submit({ ga_client_id = iter [ i ], step = "price", destination = dict [ iter [ i ] ] [ 1 ] [
-										0 ] }, agg_client_data) ;
+										submit({ ga_client_id = i, step = "price", destination = dict [ i ] [ 1 ] [
+										maxDest ] }, agg_client_data) ;
 									}
 									else 
 									{
-										submit({ ga_client_id = iter [ i ], step = "search", destination
-										= dict [ iter [ i ] ] [ 1 ] [ 0 ] }, agg_client_data) ;
+										submit({ ga_client_id = i, step = "search", destination
+										= dict [ i ] [ 1 ] [ maxDest ] }, agg_client_data) ;
 									}
 								}
 
@@ -160,8 +147,6 @@ composite Test2
 					{
 						if(has(dict, deviceOut.device_ga_client_id) == false)
 						{
-						//записываю сиды для итерации отображения
-							appendM(iter, deviceOut.device_ga_client_id) ;
 							//формирую отображение
 							mutable list<list<rstring>> tmpList = [ ] ;
 							list<rstring> emptyList = [ ] ;
@@ -182,46 +167,35 @@ composite Test2
 						if(counter == MAX_SIZE - 1)
 						{
 						//поиск моды
-							for(int32 i in range(size(iter)))
+							for(rstring i in dict)
 							{
 								mutable int32 maxDest = 0 ;
-								for(int32 j in range(size(dict [ iter [ i ] ] [ 1 ])))
+								for(int32 j in range(size(dict [ i ] [ 1 ])))
 								{
-									if(size(find(dict [ iter [ i ] ] [ 1 ], dict [ iter [ i ] ] [ 1 ] [ j
+									if(size(find(dict [ i ] [ 1 ], dict [ i ] [ 1 ] [ j
 										])) >= maxDest)
-									{
 										maxDest = j ;
-									}
-
-									if(j == size(dict [ iter [ i ] ] [ 1 ]) - 1)
-									{
-										dict [ iter [ i ] ] [ 1 ] [ 0 ] = dict [ iter [ i ] ] [ 1 ] [ maxDest
-											] ;
-									}
 
 								}
-
-							}
-							//поиск максимального степа у сида и вывод всего тапла
-							for(int32 i in range(size(iter)))
-							{
-								if(has(dict [ iter [ i ] ] [ 0 ], "book"))
+								
+								//поиск максимального степа у сида и вывод всего тапла
+								if(has(dict [ i ] [ 0 ], "book"))
 								{
-									submit({ device_ga_client_id = iter [ i ], step = "book", destination = dict
-										[ iter [ i ] ] [ 1 ] [ 0 ] }, agg_device_data) ;
+									submit({ device_ga_client_id = i, step = "book", destination = dict
+										[ i ] [ 1 ] [ maxDest ] }, agg_device_data) ;
 								}
 
 								else
 								{
-									if(has(dict [ iter [ i ] ] [ 0 ], "price"))
+									if(has(dict [ i ] [ 0 ], "price")) 
 									{
-										submit({ device_ga_client_id = iter [ i ], step = "price", destination = dict [ iter [ i ] ] [ 1 ] [
-										0 ] }, agg_device_data) ;
+										submit({ device_ga_client_id = i, step = "price", destination = dict [ i ] [ 1 ] [
+										maxDest ] }, agg_device_data) ;
 									}
-									else
+									else 
 									{
-										submit({ device_ga_client_id = iter [ i ], step = "search", destination
-										= dict [ iter [ i ] ] [ 1 ] [ 0 ] }, agg_device_data) ;
+										submit({ device_ga_client_id = i, step = "search", destination
+										= dict [ i ] [ 1 ] [ maxDest ] }, agg_device_data) ;
 									}
 								}
 
@@ -230,7 +204,6 @@ composite Test2
 						}
 
 						counter = counter + 1 ;
-
 					}
 					
 				}
